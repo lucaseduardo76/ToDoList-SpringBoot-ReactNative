@@ -35,15 +35,17 @@ export const Home = () => {
         }
     };
 
+    navigator.setOptions({
+        title: `Bem vindo(a), ${userData?.name}`
+    })
+
     useEffect(() => {
 
         
         fetchUserData();
 
-        navigator.setOptions({
-            title: `Bem vindo(a), ${userData?.name}`
-        })
-    }, [userData]);
+        
+    }, []);
 
     const handlePostTask = async () => {
         if (taskTitle != "") {
