@@ -2,7 +2,7 @@ import { View, Text, TextInput, Dimensions, Pressable, Image } from "react-nativ
 import { styleInput, styleInfos, styleTask } from './homeStyle'
 import React, { useState, useEffect } from 'react';
 import { HomeScreenRouteProp, UserData, } from "../../interfaces";
-import { useRoute } from '@react-navigation/native'
+import { useRoute, useNavigation } from '@react-navigation/native'
 import axios from 'axios'
 
 
@@ -13,6 +13,9 @@ export const Home = () => {
 
     const route = useRoute<HomeScreenRouteProp>();
     const idUser = route.params?.id;
+
+    const navigator = useNavigation();
+
 
     // Importar ícones
     const delIcon = require('./../../assets/trash.png');
@@ -27,7 +30,6 @@ export const Home = () => {
         try {
             const response = await axios.get<UserData>(`http://192.168.1.13:8080/api/users/${idUser}`);
             setUserData(response.data);
-            console.log(response.data.name)
         } catch (error) {
             console.error("Erro ao buscar dados do usuário:", error);
         }
@@ -35,8 +37,13 @@ export const Home = () => {
 
     useEffect(() => {
 
+        
         fetchUserData();
-    }, []);
+
+        navigator.setOptions({
+            title: `Bem vindo(a), ${userData?.name}`
+        })
+    }, [userData]);
 
     const handlePostTask = async () => {
         if (taskTitle != "") {
@@ -112,12 +119,12 @@ export const Home = () => {
 
 
     return (
-        <View style={{ paddingHorizontal: 20, marginTop: 35, height: "100%", backgroundColor: "#304163" }}>
+        <View style={{ paddingHorizontal: 20,  height: "100%", backgroundColor: "#304163" }}>
             <View style={styleInput.inputContainer}>
 
                 <View style={styleInput.inputView}>
                     <TextInput
-                        placeholder='Digite seu email'
+                        placeholder='Digite a nova tarefa'
                         placeholderTextColor="#999"
                         onFocus={() => "setIsFocused(true)"}
                         onBlur={() => "setIsFocused(false)"}
