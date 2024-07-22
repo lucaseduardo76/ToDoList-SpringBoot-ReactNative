@@ -59,8 +59,6 @@ public class TaskService {
     }
 
     private Task updateTask(Task entity, Task obj) {
-        entity.setTitle(obj.getTitle());
-        entity.setDescription(obj.getDescription());
         entity.setStatus(obj.getStatus());
 
         return repository.save(entity);
